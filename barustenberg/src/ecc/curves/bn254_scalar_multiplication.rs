@@ -1,8 +1,5 @@
-use std::marker::PhantomData;
-
 use ark_bn254::{G1Affine, G1Projective};
-use ark_ec::AffineRepr;
-use ark_ff::{FftField, Field, Zero};
+use ark_ff::{Field, Zero};
 
 pub(crate) type G1AffineGroup = <ark_ec::short_weierstrass::Affine<
     <ark_bn254::Config as ark_ec::bn::BnConfig>::G1Config,
@@ -30,41 +27,13 @@ pub(crate) fn is_point_at_infinity(point: &G1Projective) -> bool {
     !(point.x.is_zero() && point.y.is_zero()) && point.z.is_zero()
 }
 
-#[derive(Clone, Default, Debug)]
-pub(crate) struct PippengerRuntimeState<Fr: Field + FftField, G: AffineRepr> {
-    phantom: PhantomData<(Fr, G)>,
-}
-
-impl<Fr: Field + FftField, G: AffineRepr> PippengerRuntimeState<Fr, G> {
-    pub(crate) fn new(_size: usize) -> Self {
-        todo!()
-    }
-    pub(crate) fn pippenger_unsafe(
-        &mut self,
-        _mul_scalars: &mut [Fr],
-        _srs_points: &[G],
-        _msm_size: usize,
-    ) -> G {
-        todo!()
-    }
-
-    pub(crate) fn pippenger(
-        &mut self,
-        _scalars: &mut [Fr],
-        _points: &[G],
-        _num_initial_points: usize,
-        _handle_edge_cases: bool,
-    ) -> G {
-        todo!()
-    }
-}
-pub(crate) fn generate_pippenger_point_table(
+pub(crate) fn generate_pippenger_point_table<F: Field>(
     points: &mut [G1Affine],
     table: &mut [G1Affine],
     num_points: usize,
 ) {
     // calculate the cube root of unity
-    let beta = cube_root_of_unity::<ark_bn254::Fq>();
+    let beta = cube_root_of_unity::<F>();
 
     // iterate backwards, so that `points` and `table` can point to the same memory location
     for i in (0..num_points).rev() {
