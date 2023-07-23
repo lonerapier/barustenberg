@@ -2,8 +2,7 @@ use crate::{
     ecc::{
         reduced_ate_pairing_batch_precomputed,
         scalar_multiplication::{
-            runtime_states::PippengerRuntimeState,
-            scalar_multiplication::generate_pippenger_point_table,
+            generate_pippenger_point_table, runtime_states::PippengerRuntimeState,
         },
     },
     plonk::proof_system::constants::NUM_LIMB_BITS_IN_FIELD_SIMULATION,
