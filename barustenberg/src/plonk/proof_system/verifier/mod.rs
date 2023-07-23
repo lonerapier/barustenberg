@@ -1,17 +1,17 @@
 use crate::{
     ecc::{
-        curves::bn254_scalar_multiplication::{
-            generate_pippenger_point_table, PippengerRuntimeState,
-        },
         reduced_ate_pairing_batch_precomputed,
+        scalar_multiplication::{
+            runtime_states::PippengerRuntimeState,
+            scalar_multiplication::generate_pippenger_point_table,
+        },
     },
     plonk::proof_system::constants::NUM_LIMB_BITS_IN_FIELD_SIMULATION,
     transcript::{BarretenHasher, Manifest, Transcript},
 };
 
 use ark_bn254::{Fq, Fq12, Fr, G1Affine, G1Projective};
-use ark_ec::AffineRepr;
-use ark_ec::CurveGroup;
+use ark_ec::{AffineRepr, CurveGroup};
 use ark_ff::{BigInteger, Field, One, Zero};
 
 use super::{
@@ -19,8 +19,7 @@ use super::{
     types::{prover_settings::Settings, Proof},
 };
 
-use std::cell::RefCell;
-use std::{collections::HashMap, rc::Rc};
+use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 use super::verification_key::VerificationKey;
 
